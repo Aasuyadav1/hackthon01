@@ -5,6 +5,8 @@ import UploadWidget from "@/components/cloudinary/upload-widget";
 import Hero from "@/components/landing-cmp/hero";
 import ProductDetails from "@/components/products/product-details";
 import Influencer from "@/components/influencers/influencer";
+import InfluencerAdmin from "@/components/admin-dash/influencer-admin";
+import InstaInput from "@/components/insta-input";
 
 export default function Home() {
   return (
@@ -20,6 +22,8 @@ export default function Home() {
       <Hero />
       <ProductDetails />
       <Influencer/>
+      <InfluencerAdmin/>
+      <InstaInput/>
     </main>
   );
 }
