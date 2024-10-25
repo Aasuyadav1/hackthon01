@@ -70,10 +70,10 @@ const ProductUploader = () => {
     reader.readAsDataURL(file);
     setError(null);
   };
-
+ 
   return (
-    <div className="bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] rounded-2xl p-1.5">
-      <div className="w-80 mx-auto border bg-white rounded-xl">
+    <div className="instagrad p-[0.375rem] h-full w-full grid place-content-center">
+      <div className="w-[400px] h-[450px] border bg-white rounded-xl">
         <div
           className={`relative transition-all duration-500 ease-out
             ${dragActive ? "scale-98" : "scale-100"}`}
@@ -132,7 +132,7 @@ const ProductUploader = () => {
             ) : (
               // Upload Prompt
               <div
-                className={`border-2 border-dashed rounded-lg p-8 transition-all duration-300
+                className={`border-2 border-dashed rounded-lg p-20 transition-all duration-300
                 ${
                   dragActive ? "border-[#833ab4] bg-blue-50" : "border-gray-200"
                 }
@@ -145,7 +145,7 @@ const ProductUploader = () => {
                       ${dragActive ? "scale-110" : "scale-0"}`}
                     ></div>
                     <div className="relative w-full h-full rounded-full bg-[#833ab4]/10 flex items-center justify-center">
-                      <Camera className="w-8 h-8 text-[#833ab4]" />
+                      <Camera className="w-10 h-10 text-[#833ab4]" />
                     </div>
                   </div>
                   <div className="space-y-2">
