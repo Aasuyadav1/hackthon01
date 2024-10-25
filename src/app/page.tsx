@@ -7,6 +7,7 @@ import ProductDetails from "@/components/products/product-details";
 import Influencer from "@/components/influencers/influencer";
 import InfluencerAdmin from "@/components/admin-dash/influencer-admin";
 import InstaInput from "@/components/insta-input";
+import InstaCard from "@/components/insta-card";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <Influencer/>
       <InfluencerAdmin/>
       <InstaInput/>
+      <InstaCard/>
     </main>
   );
 }
