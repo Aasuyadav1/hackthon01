@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react";
 import ProductUploader from "../product-uploader";
 import Image from "next/image";
