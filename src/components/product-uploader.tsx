@@ -7,9 +7,6 @@
 import ProductDetails from "./products/product-details";
 import DevModal from "./dev-cmp/modal";
 
-
-
-
   const ProductUploader = () => {
     const [dragActive, setDragActive] = useState(false);
     const [uploading, setUploading] = useState(false);
