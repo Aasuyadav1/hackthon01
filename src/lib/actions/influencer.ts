@@ -5,17 +5,30 @@ import { Influencer } from "../db/schemas/influencer";
 import { sign } from "jsonwebtoken";
 import { MailService } from "../services/mail";
 import { ImageTxtModal } from "@/components/image-txt-modal";
+import { auth } from "../../../auth";
 
 export const create_influencer = async (data: ICreateInfluencer) => {
+
+    const session = await auth()
+
+    if(!session){
+        return{
+            success: false,
+            message: "not auth"
+        }
+    }
+
+    const userId = session?.user?.id;
+
     try {
         await connectDatabase();
         
-        if(!data.userId) {
+        if(!userId) {
             throw new Error("User Id not provided.")
         }
 
-        const token = sign({_id: data.userId}, process.env.NEXT_AUTH_SECRET as string);
 
+<<<<<<< HEAD
         const responses = [];
 
         for (let i = 0; i < 4; i++) {
@@ -24,6 +37,11 @@ export const create_influencer = async (data: ICreateInfluencer) => {
             });
             const response = await ImageTxtModal(image.blob, 'Analyze the provided social media post and generate multiple suitable niche')
         }
+=======
+        const token = sign({_id: userId}, process.env.NEXT_AUTH_SECRET as string);
+
+      
+>>>>>>> 5d3a746c684d084c60ef70923e8694f4ccd9254a
         
         await Influencer.create({
             ...data, 
@@ -33,15 +51,15 @@ export const create_influencer = async (data: ICreateInfluencer) => {
             }
         });
 
-        const mail = new MailService();
+        // const mail = new MailService();
          
-        const message = await mail.sendAuthorization({
-            email: data.email, 
-            token
-        }) 
+        // const message = await mail.sendAuthorization({
+        //     email: data.email, 
+        //     token
+        // }) 
         return {
             success: true, 
-            message: `[${message.messageId}]: Verification mail sent successfully.`
+            message: `: Verification mail sent successfully.`
         };
     } catch (error) {
         console.log(error)

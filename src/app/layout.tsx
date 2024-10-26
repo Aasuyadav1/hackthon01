@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,6 +35,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${jakartaSans.variable} antialiased font-jakarta`}
       >
+         <header className="w-full flex items-center justify-between p-5 bg-slate-50 border-b">
+    <Link href="/" className="instagrad text-4xl font-extrabold text-transparent bg-clip-text">
+            FLUENT Match
+          </Link>
+
+          <div className="space-x-4">
+            <Link className="p-3 px-8 rounded-full font-semibold border-2 text-[#FC4B29] border-[#FC4B29]" href={"/"}>Brand</Link>
+            <Link className="p-3 px-8 rounded-full font-semibold border-2 bg-[#FC4B29] border-[#FC4B29] text-white" href={"/influencer/account"}>Creator</Link>
+          </div>
+    </header>
         {children}
       </body>
     </html>
