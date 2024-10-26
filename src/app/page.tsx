@@ -1,10 +1,9 @@
 import Image from "next/image";
 import ProductUploader from "@/components/product-uploader";
-import ImageTxtModal from "@/components/image-txt-modal";
 import UploadWidget from "@/components/cloudinary/upload-widget";
 import Hero from "@/components/landing-cmp/hero";
 import ProductDetails from "@/components/products/product-details";
-import Influencer from "@/components/influencers/influencer";
+import InfluencerCard from "@/components/influencers/influencer-card";
 
 export default function Home() {
   return (
@@ -19,7 +18,7 @@ export default function Home() {
     <main className="h-dvh w-full">
       <Hero />
       <ProductDetails />
-      <Influencer/>
+      <InfluencerCard/>
     </main>
   );
 }
