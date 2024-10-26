@@ -1,5 +1,6 @@
 import React from "react";
 import { FaInstagram } from "react-icons/fa";
+import DevModal, { ModalTrigger }  from "./dev-cmp/modal";
 
 const InstaInput = () => {
   return (
@@ -19,6 +20,23 @@ const InstaInput = () => {
       </div>
       <p className="text-xl mt-4 ">We will automatically fetch your insta details </p>
       </div>
+      <DevModal
+      title="Enter Email"
+      defaultOpen={false}
+      modalBtn={
+        <button className="bg-[#ee3006] p-2 px-4 rounded-md hover:opacity-80">
+          Add email
+        </button>
+      }
+    >
+      <div className="flex flex-col gap-3 w-full py-10 px-8 pt-0 mt-4">
+      <form action="">
+      <input type="email" placeholder="abcd@gmail.com" className="w-full rounded-full bg-white  px-6 py-2 border-2 border-black" />
+      <button className="bg-red-600 text-white w-full rounded-full mt-6 py-2" type="submit">Submit</button>
+      </form>
+
+      </div>
+    </DevModal>
     </div>
   );
 };
