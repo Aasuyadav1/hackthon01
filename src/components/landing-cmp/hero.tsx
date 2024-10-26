@@ -5,7 +5,6 @@ import Image from "next/image";
 import { FaChevronRight } from "react-icons/fa6";
 
 const Hero = () => {
-  const [state, setState] = useState("upload") ///upload => Process => Search
   return (
     <section className="grid md:grid-cols-2 mx-auto h-full w-full grid-cols-1 ">
       <div className="flex items-center relative overflow-hidden">
@@ -34,7 +33,7 @@ const Hero = () => {
         </div>
       </div>
       <div>
-        <ProductUploader setState={setState} />
+        <ProductUploader/>
       </div>
     </section>
   );

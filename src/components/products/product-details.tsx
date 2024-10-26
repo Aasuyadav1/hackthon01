@@ -1,50 +1,22 @@
 import React from "react";
 import Image from "next/image";
-import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
+import { GiHumanTarget, GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
+import { LuShapes } from "react-icons/lu";
+import { BiTargetLock } from "react-icons/bi";
+import { TbGenderMale } from "react-icons/tb";
 
-const ProductDetails = () => {
-  const details = [
-    {
-      label: "Category",
-      icon: <GiPerspectiveDiceSixFacesRandom />,
-      value: "Clothing",
-    },
-    {
-      label: "Age Group",
-      icon: <GiPerspectiveDiceSixFacesRandom />,
-      value: "18+",
-    },
-    {
-      label: "Age Group",
-      icon: <GiPerspectiveDiceSixFacesRandom />,
-      value: "18+",
-    },
-    {
-      label: "Age Group",
-      icon: <GiPerspectiveDiceSixFacesRandom />,
-      value: "18+",
-    },
-    {
-      label: "Age Group",
-      icon: <GiPerspectiveDiceSixFacesRandom />,
-      value: "18+",
-    },
-    {
-      label: "Age Group",
-      icon: <GiPerspectiveDiceSixFacesRandom />,
-      value: "18+",
-    },
-    {
-      label: "Age Group",
-      icon: <GiPerspectiveDiceSixFacesRandom />,
-      value: "18+",
-    },
-    {
-      label: "Age Group",
-      icon: <GiPerspectiveDiceSixFacesRandom />,
-      value: "18+",
-    },
-  ];
+const ProductDetails = ({data, preview}:{data:[{label:string, value:string}],preview:string}) => {
+  const Icons = {
+    "Category": <LuShapes/>,
+    "Sub category": <BiTargetLock/>,
+    "Age Group": <GiHumanTarget/>,
+    "Gender": <TbGenderMale/>,
+    "Tier": <LuShapes/>,
+    "Color Schemes": <LuShapes/>,
+    "Eco friendly": <LuShapes/>,
+    "Interests": <LuShapes/>
+  };
+
   return (
     <section className="p-10 max-w-7xl relative mx-auto">
       <h1 className="text-4xl font-bold">Product Details</h1>
@@ -61,8 +33,7 @@ const ProductDetails = () => {
       <div className="flex mt-10 w-full gap-28">
         <div>
           <Image
-            src="https://images.unsplash.com/photo-1543508282-6319a3e2621f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHNob2VzfGVufDB8fDB8fHww"
-            alt="product"
+            src={preview}
             width={1000}
             height={1000}
             className="max-w-[450px] w-full aspect-square rounded-lg border-2 border-ACCENT"
@@ -74,13 +45,14 @@ const ProductDetails = () => {
           </button>
         </div>
         <div className="grid gap-x-16 gap-y-8 grid-cols-2 z-10">
-          {details.map((detail, idx) => (
+          {data.map((detail, idx) => (
             <div className="shadow-xl px-6 rounded-xl flex justify-center items-center py-2 gap-6 border-2 z-10 bg-white">
               <span key={idx} className="text-6xl">
-                {detail.icon}
+                {Icons[detail.label]}
               </span>
               <div>
                 <h2 className="text-xl font-semibold">{detail.label}</h2>
+                {detail.label === "Color Schemes" && <div style={{background:detail.value}} className="w-32 h-6 rounded-md"></div>}
                 <p className="text-lg font-medium opacity-80">{detail.value}</p>
               </div>
             </div>
