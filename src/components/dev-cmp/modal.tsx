@@ -55,7 +55,7 @@ const DevModal = ({
           <Dialog.Overlay className="Modal-Overlay inset-0 fixed bg-black/50 z-50" />
           <Dialog.Content
             {...contentProps}
-            className={`Modal-Content w-[95%] md:w-full  fixed z-50 top-[50%] left-[50%] max-w-lg translate-x-[-50%] translate-y-[-50%] rounded-xl bg-[#F5F8FF] text-black dark:bg-[#ffffff] border border-[#ee3006]/30  ${contentProps?.className}`}
+            className={`Modal-Content w-[95%] md:w-full  fixed z-50 top-[50%] left-[50%] max-w-7xl translate-x-[-50%] translate-y-[-50%] rounded-xl bg-[#F5F8FF] text-black dark:bg-[#ffffff] border border-[#ee3006]/30  ${contentProps?.className}`}
           >
             {(closeIcon || title) && (
               <div className="flex items-start justify-end w-full p-2">
