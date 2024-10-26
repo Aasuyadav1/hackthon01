@@ -1,42 +1,69 @@
-import React from "react";
+'use client'
+import React, { useState, FormEvent, ChangeEvent } from "react";
 import { FaInstagram } from "react-icons/fa";
-import DevModal, { ModalTrigger }  from "./dev-cmp/modal";
+import { getUser } from "@/lib/actions/services";
+import Link from "next/link";
 
-const InstaInput = () => {
+interface UserResponse {
+  // Define the expected response type from getUser
+  // Add properties based on your actual API response
+  [key: string]: any;
+}
+
+const InstaInput: React.FC = () => {
+  const [username, setUsername] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setUsername(e.target.value);
+  };
+
+  // const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+  //   e.preventDefault();
+  //   if (!username.trim()) return;
+
+  //   setIsLoading(true);
+  //   try {
+  //     const result = await getUser(username);
+  //     // Handle the result as needed
+  //     console.log("user info",result);
+  //   } catch (error) {
+  //     console.error('Error fetching user:', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   return (
     <div
       className={`w-full h-full bg-[url('/hero/insta.jpeg')] grid place-content-center tracking-wide`}
     >
       <div className="max-w-2xl mx-auto">
-      <h2 className="flex gap-2 items-center" >
-        <FaInstagram
-          className="text-6xl text-[#F05161]
-"
-        />
-        <span className="text-4xl font-medium">Enter Your Instagram ID</span>
-      </h2>
-      <div className="mt-6">
-        <input type="text" name="" id="" className="w-full py-4 px-4 rounded-full bg-white border-4 focus:outline-0 focus:ring-2 ring-[#F05161] border-[#F05161]" placeholder="https://www.instagram.com/aasu_yadav_59/" />
+        <h2 className="flex gap-2 items-center mb-10">
+          <FaInstagram
+            className="text-6xl text-[#F05161]"
+          />
+          <span className="text-4xl font-medium">Enter Your Instagram ID</span>
+        </h2>
+        <Link href={`/influencer/account/${username}`} className="">
+          <input
+            type="text"
+            className="w-full py-4 px-4 rounded-full bg-white border-4 focus:outline-0 focus:ring-2 ring-[#F05161] border-[#F05161]"
+            value={username}
+            onChange={handleInputChange}
+            placeholder="https://www.instagram.com/aasu_yadav_59/"
+          />
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full mt-4 bg-[#F05161] text-white py-4 px-6 rounded-full hover:bg-[#d8465a] transition-colors disabled:opacity-50"
+          >
+            {isLoading ? 'Loading...' : 'Submit'}
+          </button>
+        </Link>
+        <p className="text-xl mt-4">We will automatically fetch your insta details</p>
       </div>
-      <p className="text-xl mt-4 ">We will automatically fetch your insta details </p>
-      </div>
-      <DevModal
-      title="Enter Email"
-      defaultOpen={false}
-      modalBtn={
-        <button className="bg-[#ee3006] p-2 px-4 rounded-md hover:opacity-80">
-          Add email
-        </button>
-      }
-    >
-      <div className="flex flex-col gap-3 w-full py-10 px-8 pt-0 mt-4">
-      <form action="">
-      <input type="email" placeholder="abcd@gmail.com" className="w-full rounded-full bg-white  px-6 py-2 border-2 border-black" />
-      <button className="bg-red-600 text-white w-full rounded-full mt-6 py-2" type="submit">Submit</button>
-      </form>
-
-      </div>
-    </DevModal>
+     
     </div>
   );
 };

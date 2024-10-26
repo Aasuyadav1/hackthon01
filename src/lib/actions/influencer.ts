@@ -4,18 +4,32 @@ import { connectDatabase } from "../db"
 import { Influencer } from "../db/schemas/influencer";
 import { sign } from "jsonwebtoken";
 import { MailService } from "../services/mail";
+import { auth } from "../../../auth";
 
 export const create_influencer = async (data: ICreateInfluencer) => {
+
+    const session = await auth()
+
+    if(!session){
+        return{
+            success: false,
+            message: "not auth"
+        }
+    }
+
+    const userId = session?.user?.id;
+
     try {
         await connectDatabase();
         
-        if(!data.userId) {
+        if(!userId) {
             throw new Error("User Id not provided.")
         }
 
-        const token = sign({_id: data.userId}, process.env.NEXT_AUTH_SECRET as string);
 
-        // Create AI Service to fetch niche for the following user;
+        const token = sign({_id: userId}, process.env.NEXT_AUTH_SECRET as string);
+
+      
         
         await Influencer.create({
             ...data, 
@@ -25,15 +39,15 @@ export const create_influencer = async (data: ICreateInfluencer) => {
             }
         });
 
-        const mail = new MailService();
+        // const mail = new MailService();
          
-        const message = await mail.sendAuthorization({
-            email: data.email, 
-            token
-        }) 
+        // const message = await mail.sendAuthorization({
+        //     email: data.email, 
+        //     token
+        // }) 
         return {
             success: true, 
-            message: `[${message.messageId}]: Verification mail sent successfully.`
+            message: `: Verification mail sent successfully.`
         };
     } catch (error) {
         console.log(error)
