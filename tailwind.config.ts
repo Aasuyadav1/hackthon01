@@ -9,8 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        ACCENT:"#8F60F7",
       },
       fontFamily: {
         jakarta: "var(--font-jakarta-sans)"

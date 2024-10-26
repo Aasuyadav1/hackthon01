@@ -1,31 +1,23 @@
 "use client";
-import React, { useState, useCallback } from "react";
-import {
-  Upload,
-  Check,
-  X,
-  Camera,
-  Loader2,
-} from "lucide-react";
+import React, { useState, useCallback, useEffect } from "react";
+import { Upload, Check, X, Camera, Loader2 } from "lucide-react";
 import Image from "next/image";
+import { ImageTxtModal } from "./image-txt-modal";
 
-const ProductUploader = () => {
+const ProductUploader = ({setState}) => {
   const [dragActive, setDragActive] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<string | null>(null);
   const [filterHover, setFilterHover] = useState(false);
   const [revealAnimation, setRevealAnimation] = useState(false);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
+    setDragActive(e.type === "dragenter" || e.type === "dragover");
   }, []);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
@@ -42,7 +34,7 @@ const ProductUploader = () => {
     handleFile(file);
   };
 
-  const handleFile = (file?: File) => {
+  const handleFile = async (file?: File) => {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
@@ -51,15 +43,44 @@ const ProductUploader = () => {
     }
 
     const reader = new FileReader();
-    reader.onloadend = () => {
+    reader.onloadend = async () => {
       setPreview(reader.result as string);
       setUploading(true);
+      setError(null);
+
       // Start the reveal animation after a short delay
       setTimeout(() => {
         setRevealAnimation(true);
-        setTimeout(() => {
+        setTimeout(async () => {
           setUploading(false);
           setUploadComplete(true);
+
+          // Run the image text analysis
+          const analysisResult = await ImageTxtModal(
+            file,
+            `When I upload a product image, analyze it and generate a JSON object with the following structure and possible enum values:
+
+{
+  "main_category:"",
+  sub_category:"",
+  age_group:"",
+  gender:"",
+  tier:"", // Options: ["BUDGET", "MID_RANGE", "PREMIUM", "LUXURY"],,
+  color_scheme:"", //accurate color scheme in hexcodes
+  interests:"", //Options :["TECH_SAVVY", "FITNESS", "FASHION", "OUTDOOR"] 
+}
+
+Requirements:
+1. Analyze the visual elements and details in the product image
+2. Provide values for all fields based on the visible characteristics
+3. Include confidence scores (0-1) for classifications when relevant
+4. Add relevant keywords based on the product style and features
+5. Follow the enum restrictions for categorical fields
+6. Overall give me a accurate niche
+`
+          );
+          setResult(analysisResult); // Set the analysis result
+
           setTimeout(() => {
             setUploadComplete(false);
             setRevealAnimation(false);
@@ -68,15 +89,17 @@ const ProductUploader = () => {
       }, 500);
     };
     reader.readAsDataURL(file);
-    setError(null);
   };
+useEffect(()=>{
+  setState("Result")
+})
 
   return (
-    <div className="bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] rounded-2xl p-1.5">
-      <div className="w-80 mx-auto border bg-white rounded-xl">
+    <div className="instagrad p-[0.375rem] h-full w-full grid place-content-center">
+      <div className="w-[400px] h-[450px] border bg-white rounded-xl">
         <div
           className={`relative transition-all duration-500 ease-out
-            ${dragActive ? "scale-98" : "scale-100"}`}
+          ${dragActive ? "scale-98" : "scale-100"}`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
@@ -108,7 +131,7 @@ const ProductUploader = () => {
                     className={`w-full h-full object-cover transition-all duration-500 filter ${
                       uploading && "blur-md"
                     }
-                      ${filterHover ? "scale-105" : "scale-100"}`}
+                    ${filterHover ? "scale-105" : "scale-100"}`}
                   />
                   {/* Colored overlay image */}
                   <div className="absolute inset-0">
@@ -118,7 +141,7 @@ const ProductUploader = () => {
                       height={500}
                       width={500}
                       className={`w-full h-full object-cover transition-all duration-500
-                        ${filterHover ? "scale-105" : "scale-100"}`}
+                      ${filterHover ? "scale-105" : "scale-100"}`}
                       style={{
                         clipPath: revealAnimation
                           ? "inset(0 0 0 0)"
@@ -132,20 +155,18 @@ const ProductUploader = () => {
             ) : (
               // Upload Prompt
               <div
-                className={`border-2 border-dashed rounded-lg p-8 transition-all duration-300
-                ${
-                  dragActive ? "border-[#833ab4] bg-blue-50" : "border-gray-200"
-                }
-                ${error ? "border-red-500 bg-red-50" : ""}`}
+                className={`border-2 border-dashed rounded-lg p-20 transition-all duration-300
+              ${dragActive ? "border-[#833ab4] bg-blue-50" : "border-gray-200"}
+              ${error ? "border-red-500 bg-red-50" : ""}`}
               >
                 <div className="space-y-4 text-center">
                   <div className="relative mx-auto w-20 h-20">
                     <div
                       className={`absolute inset-0 rounded-full bg-blue-100 animate-ping opacity-20
-                      ${dragActive ? "scale-110" : "scale-0"}`}
+                    ${dragActive ? "scale-110" : "scale-0"}`}
                     ></div>
                     <div className="relative w-full h-full rounded-full bg-[#833ab4]/10 flex items-center justify-center">
-                      <Camera className="w-8 h-8 text-[#833ab4]" />
+                      <Camera className="w-10 h-10 text-[#833ab4]" />
                     </div>
                   </div>
                   <div className="space-y-2">
@@ -161,15 +182,15 @@ const ProductUploader = () => {
             {/* Upload Button */}
             <button
               className={`w-full py-3 rounded-full font-medium transition-all duration-500
-                relative overflow-hidden group
-                ${
-                  uploading
-                    ? "bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045]"
-                    : uploadComplete
-                    ? "bg-gradient-to-r from-[#b665ec] to-[#833ab4]"
-                    : "bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:from-blue-600 hover:to-purple-600"
-                }
-                text-white shadow-lg hover:shadow-xl`}
+              relative overflow-hidden group
+              ${
+                uploading
+                  ? "bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045]"
+                  : uploadComplete
+                  ? "bg-gradient-to-r from-[#b665ec] to-[#833ab4]"
+                  : "bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:from-blue-600 hover:to-purple-600"
+              }
+              text-white shadow-lg hover:shadow-xl`}
               disabled={uploading || (!preview && !dragActive)}
             >
               {uploading && (
@@ -237,6 +258,11 @@ const ProductUploader = () => {
           }
         `}</style>
       </div>
+      {result && (
+        <p className="text-center mt-4 text-gray-800">
+          Analysis Result: {result}
+        </p>
+      )}
     </div>
   );
 };
