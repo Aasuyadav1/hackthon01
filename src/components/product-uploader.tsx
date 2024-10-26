@@ -282,8 +282,11 @@ import DevModal from "./dev-cmp/modal";
           `}</style>
         </div>
 
-        <DevModal  open={jsonData.length>0 ? true : false} modalBtn={<></>}>
+        <DevModal closeIcon={false}  open={jsonData.length>0 ? true : false} modalBtn={<></>}>
+        <>
+        <button className="p-3 bg-red-500/30 text-red-600" onClick={()=>{setJsonData([])}}>Go back</button>
         <ProductDetails data={jsonData} preview={preview}/>
+        </>
         </DevModal>
       </div>
     );

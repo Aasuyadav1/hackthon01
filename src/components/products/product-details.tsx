@@ -1,14 +1,16 @@
 import React from "react";
 import Image from "next/image";
-import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
+import { GiHumanTarget, GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import { LuShapes } from "react-icons/lu";
+import { BiTargetLock } from "react-icons/bi";
+import { TbGenderMale } from "react-icons/tb";
 
 const ProductDetails = ({data, preview}:{data:[{label:string, value:string}],preview:string}) => {
   const Icons = {
     "Category": <LuShapes/>,
-    "Sub category": <LuShapes/>,
-    "Age Group": <LuShapes/>,
-    "Gender": <LuShapes/>,
+    "Sub category": <BiTargetLock/>,
+    "Age Group": <GiHumanTarget/>,
+    "Gender": <TbGenderMale/>,
     "Tier": <LuShapes/>,
     "Color Schemes": <LuShapes/>,
     "Eco friendly": <LuShapes/>,
