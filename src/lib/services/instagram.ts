@@ -20,7 +20,7 @@ export class InstagramScraper {
     async setInstagramCookie(): Promise<void> {
         if (!this.page) {
           throw new Error('Page not initialized. Call init() first.');
-        }
+        } 
 
         await this.page.setCookie({
             name: 'sessionid',

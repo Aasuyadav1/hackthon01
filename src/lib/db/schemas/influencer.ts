@@ -1,4 +1,4 @@
-import { Schema, models, model, Document } from 'mongoose';
+import { Schema, models, model } from 'mongoose';
 
 
 const InfluencerSchema = new Schema({
@@ -44,6 +44,9 @@ const InfluencerSchema = new Schema({
                 imageUrl: String
             }]
         }
+    },
+    search: {
+        keywords: [String]
     },
     verification: {
         token: String, 

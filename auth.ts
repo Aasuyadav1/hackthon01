@@ -1,8 +1,10 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
-import User from "@/models/user.model";
-import { connectDB } from "@/utils/db";
+import { connectDatabase } from "@/lib/db";
+import { User } from "@/lib/db/schemas/user";
+import { createUser } from "@/lib/actions/user";
+import { USER_ENUM } from "@/globals";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -18,7 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async session({ session }:any) {
       try {
-        await connectDB();
+        await connectDatabase();
         const sessionUser = await User.findOne({ email: session?.user?.email });
         if (session.user) {
           session.user.id = sessionUser?._id.toString();
@@ -33,14 +35,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       try {
         const email = profile?.email;
         if (!email) return false;
-        await connectDB();
+        await connectDatabase();
         let user = await User.findOne({ email: email });
         if (!user) {
-          user = await User.create({
-            email: profile?.email,
-            name: profile?.given_name?.replace(" ", "").toLowerCase(),
-            image: profile?.picture,
-          });
+          if(profile.email && profile.given_name) {
+            user = await createUser({
+              email: profile?.email,
+              name: profile?.given_name?.replace(" ", "").toLowerCase(),
+              profile_image: profile?.picture,
+              role: USER_ENUM.INFLUENCER
+            });
+          }
         }
         return true;
       } catch (error) {
@@ -51,8 +56,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   pages: {
     signIn: "/auth",
-    // error: "/",
-    // signOut: "/",
   },
   secret: process.env.NEXT_AUTH_SECRET,
 });

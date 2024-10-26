@@ -4,6 +4,7 @@ import { connectDatabase } from "../db"
 import { Influencer } from "../db/schemas/influencer";
 import { sign } from "jsonwebtoken";
 import { MailService } from "../services/mail";
+import { ImageTxtModal } from "@/components/image-txt-modal";
 
 export const create_influencer = async (data: ICreateInfluencer) => {
     try {
@@ -15,7 +16,14 @@ export const create_influencer = async (data: ICreateInfluencer) => {
 
         const token = sign({_id: data.userId}, process.env.NEXT_AUTH_SECRET as string);
 
-        // Create AI Service to fetch niche for the following user;
+        const responses = [];
+
+        for (let i = 0; i < 4; i++) {
+            const image = await fetch(data.instagram.details.posts[i].imageUrl, {
+                method: 'GET'
+            });
+            const response = await ImageTxtModal(image.blob, 'Analyze the provided social media post and generate multiple suitable niche')
+        }
         
         await Influencer.create({
             ...data, 

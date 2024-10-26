@@ -47,3 +47,27 @@ interface IUpdateUser extends Partial<User> {
 interface DeleteUser {
     _id: string
 }
+interface IProduct {
+    product: {
+        product_name: string,
+        category: {
+            main: string, 
+            sub: string
+        },
+        target_demographics: {
+            tier: string, 
+            age_range: string,
+            gender: string,
+        },
+        other: {
+            color_scheme: string[],
+            is_eco_friendly: string,
+            interests: string
+        },
+        keywords: string[],
+    }
+}
+
+interface IUpdateBrand extends Partial<IProduct> {
+_id: string
+}
