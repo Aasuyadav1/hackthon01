@@ -1,0 +1,28 @@
+import mongoose, { ConnectOptions } from "mongoose";
+
+let isConnected = false;
+
+export const connectDB = async (): Promise<void> => {
+  mongoose.set("strictQuery", true);
+
+  if (isConnected) {
+    console.info("MongoDB is already connected");
+    return;
+  }
+
+  try {
+    await mongoose.connect(
+      process.env.MONGOOSE_URI as string,
+      {
+        dbName:process.env.DB_NAME,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      } as ConnectOptions
+    );
+    isConnected = true;
+    console.info("MongoDB is now connected");
+  } catch (error) {
+    console.error("Failed to connect to MongoDB", error);
+    throw new Error("MongoDB connection failed");
+  }
+};
